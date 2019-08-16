@@ -42,6 +42,7 @@ template_paths = [
 IT.add_templates(templates=template_paths)
 ```
 template_paths 需要一个二维列表， 内部的每一条即为一个模板记录，每条记录需要三个数据：
+
     0： 模板名称（即上面的 SJZG 对应的位置）
     1： 模板位置，可以是本地相对路径或绝对路径，也可以是图片网址（即上面的 .jpg 对应的位置）
     2： 模板阈值，在匹配模板时阈值越高越精确，但也可能导致匹配不上，若不确定多少值，则设置为 0 即可（即上面的 81 对应的位置）
@@ -56,6 +57,7 @@ replacements = [
 IT.add_replace_img(repl_paths=replacements)
 ```
 与 template_paths 一样，需要一个二维列表， 但是每条记录只需要两个数据：
+
     0： logo对应的模板名称，即您希望此logo替换哪一个模板，注意此名称需要和 template_paths 的模板名称一致
     1： logo位置，可以是本地相对路径或绝对路径，也可以是图片网址
 
@@ -81,6 +83,7 @@ image = 'images/shijuezhongguo_1.jpg'
 check_result = IT.check(image)
 ```
 需要注意的是，check 函数只接收单个图像地址， 若需要处理多张图片，请在初始化后使用循环条件调用 check
+
 返回的 check_result 如下：
 ```
 {'SJZG': True}
@@ -102,6 +105,7 @@ IT.show()
 save_result = IT.save('replaced_image.jpg')
 ```
 如果您给定了保存地址，则保存成功后 save_result 的值为 True（保存失败则返回 False ），
+
 若没有给定保存地址，则 save_result 的值为处理后的图像的二进制流，您可以使用其他工具将其保存或者上传到网站
 
 到此程序流程完成
@@ -110,9 +114,9 @@ save_result = IT.save('replaced_image.jpg')
 ========
 其他的图像覆盖设置为可选项，若您有兴趣，或者发现覆盖效果不理想的时候，可以尝试调整这些选项查看效果
 
-IT.EP_METHOD = False                # encircling picking method 是否启用三点包围取点法， False 则启用直线取点法
-IT.EP_DISTANCE = 3                  # 三点包围取点法的像素取点距离
-IT.SP_PIX = 3                       # straight picking method 直线取点法的像素取点数
-IT.BORDER_EXTEND = 8                # 匹配边界的覆盖扩展像素数
-IT.KEEP_COVER_IMG_SCALE = True      # 填充logo是否保持原比例
-IT.CONCENTRATION = 100              # 填充透明度（尚不完善）
+    IT.EP_METHOD = False                # encircling picking method 是否启用三点包围取点法， False 则启用直线取点法
+    IT.EP_DISTANCE = 3                  # 三点包围取点法的像素取点距离
+    IT.SP_PIX = 3                       # straight picking method 直线取点法的像素取点数
+    IT.BORDER_EXTEND = 8                # 匹配边界的覆盖扩展像素数
+    IT.KEEP_COVER_IMG_SCALE = True      # 填充logo是否保持原比例
+    IT.CONCENTRATION = 100              # 填充透明度（尚不完善）

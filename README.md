@@ -22,16 +22,11 @@ IT = ImreplTool(cover_up=False,
 ```
 在实例化时有数个选项可提供设置：
 
-    cover_up                为bool值，设置是否覆盖图像被匹配的地方，设置后对于处理速度有一定影响；
-    
+    cover_up                为bool值，设置是否覆盖图像被匹配的地方，设置后对于处理速度有一定影响
     cover_with_img          为bool值，设置是否使用您自己的logo或水印来覆盖被匹配的区域；
-    
     cover_color             为颜色rgb值（列表: [0, 156, 255]）， 注意，当 cover_with_img 为True 时此项无效；
-    
     log_level               为日志级别，需要使用python 内置logging 包进行设置，例如： logging.ERROR， 默认是 logging.INFO 级别
-    
     optimize_t_sequence     为bool值， 设置是否在程序退出前对模板数据库排列进行优化，以提升下次运行速度
-    
 
 若您只是想检查目标图像是否包含已知模板，则不需要设置以上选项，直接默认实例化即可:
 ```

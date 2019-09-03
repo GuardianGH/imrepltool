@@ -54,12 +54,14 @@ class ImreplTool(object):
         self.CONCENTRATION = 100  # 填充透明度（尚不完善）
         self.COVER_TEMPLATES = None  # 若设置了cover_up_with_img=True，可选择覆盖哪些模板的匹配图像 (匹配上哪个模板，则使用数据库中相应的替换logo替换)
 
-    def add_templates(self, templates):
+    def add_templates(self, templates, update_if_existed=False):
         """
         将模板加入数据库
         :param templates: 二维列表： [['bp', '/home/host/images/image_1.jpg', 85], [ ... ], ...]
                                       ↑                 ↑                   ↑
                                   模板名称            模板路径               阈值
+
+        :param update_if_existed: 若库中已存在则覆盖
         :return:
         """
         if not isinstance(templates, list) and not isinstance(templates[0], list):
@@ -74,7 +76,7 @@ class ImreplTool(object):
             if t_thr < 0 or t_thr > 100:
                 raise ValueError('threshold value should be between 0 - 100')
             t_thr = 80 if t_thr == 0 else t_thr
-            self._save_t_array_in_db(name=t_name, f_path=t_path, threshold=t_thr)
+            self._save_t_array_in_db(name=t_name, f_path=t_path, threshold=t_thr, update_it=update_if_existed)
             at.update()
         at.close()
         self.LOGGER.info('process complete')
@@ -627,7 +629,7 @@ class ImreplTool(object):
                 rr, cc = draw.polygon(draw_y, draw_x)
                 draw.set_color(self._image_show, [rr, cc], p_color)
 
-    def _save_t_array_in_db(self, name, f_path, threshold=None):
+    def _save_t_array_in_db(self, name, f_path, threshold=None, update_it=False):
         im_bio = self._get_image_io(f_path)
         img_array = self._load_img(f_io=im_bio, as_gray=True)
         sk_array_str = str(img_array.tolist())
@@ -635,8 +637,20 @@ class ImreplTool(object):
         threshold = 80 if threshold is None else threshold
         hash_data = self._hash_str(sk_array_str)
         if hash_data not in self._temp_hashes:
-            add_d = {'hash_str': hash_data, 'template_type': name, 'data': sk_array_str, 'threshold': threshold, 'status': 1}
+            add_d = {
+                'hash_str': hash_data,
+                'template_type': name,
+                'data': sk_array_str,
+                'threshold': threshold,
+                'status': 1
+            }
             self._db.add(model=ImageTemplate, add_dic=add_d)
+        elif update_it and hash_data in self._temp_hashes:
+            self._db.update(
+                model_name='template_type',
+                update_dic={'template_type': name, 'data': sk_array_str, 'threshold': threshold},
+                filter_dic={'hash_str': hash_data}
+            )
 
     def _save_repl_array_in_db(self, name, f_path):
         im_bio = self._get_image_io(f_path)

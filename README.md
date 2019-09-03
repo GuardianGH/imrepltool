@@ -39,7 +39,7 @@ template_paths = [
     ['SJZG', 'templates/shijuezhongguo_template_4.jpg', 0],
 ]
 
-IT.add_templates(templates=template_paths)
+IT.add_templates(templates=template_paths, update_if_existed=False) # update_if_existed 若已存在则更新
 ```
 template_paths 需要一个二维列表， 内部的每一条即为一个模板记录，每条记录需要三个数据：
 

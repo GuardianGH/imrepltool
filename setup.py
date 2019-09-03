@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="imrepltool",
-    version="0.1.4",
+    version="0.1.5",
     author="GuardianAngel",
     author_email="zhling2012@live.com",
     description="check the image contains the specified image template and set to cover it up",

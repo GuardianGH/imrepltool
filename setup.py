@@ -28,6 +28,6 @@ setuptools.setup(
         "SQLAlchemy>=1.3.7",
         "requests>=2.22.0",
         "tqdm>=4.32.1",
-        "scikit-image>=0.15.0",
+        "scikit-image==0.15.0",
     ]
 )
